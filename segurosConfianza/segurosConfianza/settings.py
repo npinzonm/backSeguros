@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +28,8 @@ SECRET_KEY = 'django-insecure-%&f%_hew8ds1-0n(2y9g$jq#^dugse05rhxl1wwl1erepup3k5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['segurosconfianza.online', '35.225.17.62', '127.0.0.1', 'localhost']
+
 
 
 # Application definition
@@ -40,6 +44,8 @@ INSTALLED_APPS = [
     'projects',
     'rest_framework',
     'corsheaders',
+    'projects.inspeccion',
+    'projects.creacionusuario',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +57,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -79,19 +88,93 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'segurosConfianza.wsgi.application'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'django_error.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'SC-inspeccion-vehicular',        
+    #     'USER': 'developer',                     
+    #     'PASSWORD': '8)Dxe(ee2fIcX7~|',           
+    #     'HOST': '104.154.140.136',                      
+    #     'PORT': '3306', 
+    # },
+    
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': '',
+        'NAME': '',        
+        'USER': '',                     
+        'PASSWORD': '',           
+        'HOST': '',                      
+        'PORT': '', 
+    },
+    
+    'facecolda': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ConsultasFasecolda',
+        'USER': 'Developer2',
+        'PASSWORD': '>YbiM^TbQdrkZ+li',
+        'HOST': '35.184.84.118',
+        'PORT': '3306',
+    },  
+    
+    'usuarioPoliza':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Users-SegurosConfianza',
+        'USER': 'Developer',
+        'PASSWORD': 'NK&/uP@H1X*`PSJ_',
+        'HOST': '35.203.101.58',
+        'PORT': '3306',
+    }, 
 }
+
+if not DATABASES['default']['ENGINE']:  # Si 'ENGINE' de 'default' está vacío
+    DATABASES['default'] = DATABASES['usuarioPoliza'] 
+
+DATABASE_ROUTERS = ['projects.database_router.DatabaseRouter']
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # URL de tu Angular local
+    "http://localhost:58515",  # URL de tu Angular local
     "https://segurosconfianza.online",  # URL de tu Angular en producción
 ]
 
