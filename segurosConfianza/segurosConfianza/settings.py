@@ -128,22 +128,13 @@ LOGGING = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'SC-inspeccion-vehicular',        
-    #     'USER': 'developer',                     
-    #     'PASSWORD': '8)Dxe(ee2fIcX7~|',           
-    #     'HOST': '104.154.140.136',                      
-    #     'PORT': '3306', 
-    # },
-    
     'default': {
-        'ENGINE': '',
-        'NAME': '',        
-        'USER': '',                     
-        'PASSWORD': '',           
-        'HOST': '',                      
-        'PORT': '', 
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'SC-inspeccion-vehicular',        
+        'USER': 'developer',                     
+        'PASSWORD': '8)Dxe(ee2fIcX7~|',           
+        'HOST': '104.154.140.136',                      
+        'PORT': '3306', 
     },
     
     'facecolda': {
@@ -170,7 +161,6 @@ if not DATABASES['default']['ENGINE']:  # Si 'ENGINE' de 'default' está vacío
 
 DATABASE_ROUTERS = ['projects.database_router.DatabaseRouter']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # URL de tu Angular local
